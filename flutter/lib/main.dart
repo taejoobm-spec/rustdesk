@@ -106,6 +106,8 @@ Future<void> main(List<String> args) async {
     debugPrint("--cm started");
     desktopType = DesktopType.cm;
     await windowManager.ensureInitialized();
+    // M&I 원격지원(2026-11-23) : 연결 관리 창은 닫기 요청을 먼저 받아서(onWindowClose) 연결 중이면 무시한다
+    windowManager.setPreventClose(true);
     runConnectionManagerScreen();
   } else if (args.contains('--install')) {
     runInstallPage();

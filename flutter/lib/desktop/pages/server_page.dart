@@ -55,6 +55,13 @@ class _DesktopServerPageState extends State<DesktopServerPage>
 
   @override
   void onWindowClose() {
+    // M&I 원격지원(2026-11-23) : 연결된 동안에는 창 닫기(Alt+F4 · 작업 표시줄 닫기)를 무시한다
+    //   고객이 무심코 닫아 연결이 끊기던 일 — 끊기는 창 안 [연결 끊기] 단추로만
+    if (gFFI.serverModel.clients.any((c) => c.authorized && !c.disconnected)) {
+      windowManager.show();
+      windowManager.focus();
+      return;
+    }
     Future.wait([gFFI.serverModel.closeAll(), gFFI.close()]).then((_) {
       if (isMacOS) {
         RdPlatformChannel.instance.terminate();
@@ -190,7 +197,7 @@ class ConnectionManagerState extends State<ConnectionManager>
               showTitle: false,
               showMaximize: false,
               showMinimize: true,
-              showClose: true,
+              showClose: false, // M&I 원격지원(2026-11-23) : 연결 중 창 오른쪽 위 ✕ 없앰 — 끊기는 [연결 끊기] 단추로만
               onWindowCloseButton: handleWindowCloseButton,
               controller: serverModel.tabController,
               selectedBorderColor: MyTheme.accent,

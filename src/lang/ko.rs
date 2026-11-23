@@ -176,7 +176,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Permissions", "권한"),
         ("Accept", "수락"),
         ("Dismiss", "거부"),
-        ("Disconnect", "연결 해제"),
+        ("Disconnect", "연결 끊기"),
         ("Enable file copy and paste", "파일 복사 및 붙여넣기 허용"),
         ("Connected", "연결됨"),
         ("Direct and encrypted connection", "직접 및 암호화된 연결"),
