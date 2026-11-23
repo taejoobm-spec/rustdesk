@@ -129,6 +129,31 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
               width: isIncomingOnly ? 226 : null,
               child: _buildConnStatusMsg(),
             ),
+            // M&I 원격지원(2026-11-23) : 큰 창 ✕ 대신 왼쪽 아래 단추 — 연결 중이면 [연결 끊기](빨강) · 아니면 [종료]
+            //   예전 ✕ 와 같은 길(windowManager.close)로 원격지원을 끄며 연결을 끊는다
+            InkWell(
+              onTap: () {
+                stateGlobal.mniAllowMainClose = true;
+                windowManager.close();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                decoration: BoxDecoration(
+                  color: stateGlobal.videoConnCount.value > 0
+                      ? Colors.redAccent
+                      : Colors.grey.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  stateGlobal.videoConnCount.value > 0 ? '연결 끊기' : '종료',
+                  style: TextStyle(
+                      fontSize: em,
+                      color: stateGlobal.videoConnCount.value > 0
+                          ? Colors.white
+                          : null),
+                ),
+              ),
+            ).marginOnly(left: em),
             // stop
             if (!isIncomingOnly) startServiceWidget(),
             // ready && public
@@ -284,6 +309,11 @@ class _ConnectionPageState extends State<ConnectionPage>
   @override
   void onWindowClose() {
     super.onWindowClose();
+    // M&I 원격지원(2026-11-23) : 연결 중 닫기를 무시할 때는 정리도 하지 않음(tabbar_widget 의 같은 조건)
+    if (stateGlobal.videoConnCount.value > 0 &&
+        !stateGlobal.mniAllowMainClose) {
+      return;
+    }
     bind.mainOnMainWindowClose();
   }
 

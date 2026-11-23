@@ -432,6 +432,15 @@ class _DesktopTabState extends State<DesktopTab>
 
   @override
   void onWindowClose() async {
+    // M&I 원격지원(2026-11-23) : 큰 창을 닫으면 원격지원이 꺼져 연결이 끊김(고객 사고) →
+    //   누가 들어와 있는 동안에는 Alt+F4 · 작업 표시줄 닫기를 무시 · 끊기는 왼쪽 아래 [연결 끊기]로만
+    if (tabType == DesktopTabType.main &&
+        stateGlobal.videoConnCount.value > 0 &&
+        !stateGlobal.mniAllowMainClose) {
+      await windowManager.show();
+      await windowManager.focus();
+      return;
+    }
     mainWindowClose() async => await windowManager.hide();
     notMainWindowClose(WindowController windowController) async {
       if (controller.length != 0) {

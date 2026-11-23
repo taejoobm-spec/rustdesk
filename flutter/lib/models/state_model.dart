@@ -18,6 +18,8 @@ class StateGlobal {
   final RxBool showRemoteToolBar = false.obs;
   final svcStatus = SvcStatus.notReady.obs;
   final RxInt videoConnCount = 0.obs;
+  // M&I 원격지원(2026-11-23) : 큰 창 왼쪽 아래 [연결 끊기]/[종료]를 눌렀을 때만 큰 창 닫기를 허락
+  bool mniAllowMainClose = false;
   final RxBool isFocused = false.obs;
   // for mobile and web
   bool isInMainPage = true;

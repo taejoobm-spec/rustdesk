@@ -96,6 +96,7 @@ class _DesktopTabPageState extends State<DesktopTabPage> {
             backgroundColor: Theme.of(context).colorScheme.background,
             body: DesktopTab(
               controller: tabController,
+              showClose: false, // M&I 원격지원(2026-11-23) : 큰 창 ✕ 없앰 — 왼쪽 아래 [연결 끊기]/[종료]로
               tail: Offstage(
                 offstage: bind.isIncomingOnly() || bind.isDisableSettings(),
                 child: ActionIcon(
