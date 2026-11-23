@@ -2690,7 +2690,8 @@ impl LoginConfigHandler {
                     .unwrap_or_default();
         }
         if display_name.is_empty() {
-            display_name = crate::username();
+            // M&I 원격지원(2026-11-23) : 상대(고객) 화면에 뜨는 거는 쪽 이름 — PC 로그인 이름(예 «Taejo») 대신 회사 이름
+            display_name = "MNI SOFT".to_owned();
         }
         let display_name = display_name
             .split_whitespace()
